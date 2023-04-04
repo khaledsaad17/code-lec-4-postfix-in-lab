@@ -1,0 +1,106 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct node
+{
+    char data;
+    node *next;
+};
+node *temp=NULL;
+node *top =NULL;
+void push(char value)
+{
+    node *newnode=new node;
+    newnode->next=top;
+    top=newnode;
+    top->data=value;
+}
+void pop ()
+{
+    if (top==NULL)
+    {
+        cout<<"empty\n";
+    }else 
+    {
+        top=top->next;
+    }
+}
+void display()
+{
+    temp=top;
+    if (top==NULL)
+    {
+        cout<<"empty\n";
+    }else 
+    {
+        while (temp->next!=NULL)
+        {
+            cout<<temp->data<<"\t";temp=temp->next;
+        }
+        cout<<temp->data<<"\n";
+    }
+
+}
+bool empty(){if (top->next==NULL){return true;}else{return false;}}
+bool operate(char c){return c=='+'||c=='*'||c=='/'||c=='-';}
+int compare(char c){
+    if (c=='*'||c=='/')
+    {
+        return 2;
+    }else if (c=='+'||c=='-')
+    {
+        return 1;
+    }else {return 0;}    
+}
+string infix_postfix(string p)
+{
+    string postfix=" ";
+    int count=p.length();
+    char c;
+    for (int i = 0; i < count; i++)
+    {
+        c=p[i];
+        if (c=='(')
+        {
+            cout<<"1\n";
+            push(c);
+        }else if (c==')')
+        {
+            cout<<"1\n";
+            while (!empty() && top->data!='(')
+            {
+                postfix+=top->data;
+                pop();
+            }
+            pop();
+        }else if (!operate(c))
+        {
+            cout<<"1\n";
+            postfix+=c;
+        }else
+        {
+            cout<<"1\n";
+            while ( !empty() && operate(c) <= operate (top->data) )
+            {
+                postfix+=top->data;
+                pop();
+            }
+            push(c);
+            
+        }
+    }
+    while (!empty())
+    {                                                           //  (A+B)*(C*D-E)*F/G
+        cout<<"1\n";
+        postfix = postfix + top->data;
+        pop();
+    }
+    cout<<"khaled";
+    return postfix;
+}
+int main()
+{
+    string in,out="123456";
+    cin>>in;
+    out=infix_postfix(in);
+    cout<<out<<"\n";
+}
